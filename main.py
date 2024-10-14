@@ -5,50 +5,47 @@ class TextAnalyzer:
     def __init__(self, filename, symbols):
         self.filename = filename
         self.symbols = symbols
-        self.symbol_counts = {symbol: 0 for symbol in symbols}
+        self.finger_load = {finger: 0 for finger in symbols.keys()}
 
-    def count_symbols(self):
+    def find_finger(self, char):
+        for finger, layouts in self.symbols.items():
+            for layout in layouts:
+                if char in layout:
+                    return finger
+                    return None
+
+    def count_symbols(self, char):
         with open(self.filename, 'r', encoding='utf-8') as file:
             for line in file:
-                line = line.strip()  # Убираем пробелы по бокам
-                for char in line:
-                    if char in self.symbol_counts:
-                        self.symbol_counts[char] += 1
+                for char in line.strip().lower():
+                    finger = self.find_finger(char)
+                if finger:
+                    self.finger_load[finger] += 1
 
     def display_counts(self):
-        for symbol, count in self.symbol_counts.items():
+        for symbol, count in self.finger_load.items():
             print(f"'{symbol}': {count}")
-
-    def calculate_finger_load(self):
-        total_load = 0
-        for letter, count in self.letter_counts.items():
-            total_load += self.finger_load.get(letter, 0) * count
-        return total_load
-
-    def display_results(self):
-        print("Количество повторений каждой буквы:")
-        for letter, count in sorted(self.letter_counts.items()):
-            print(f"{letter}: {count}")
-        print(f"\nОбщая нагрузка на пальцы: {self.calculate_finger_load()}")
 
 
 def main():
-    filename = 'C:/voina-i-mir.txt'  # Имя файла с текстом
-    rows = (
-        (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-        (16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27),
-        (30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40),
-        (42, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53),
-        (57,)
-    )
-    rows_symbols = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',  # Цифровой ряд
-                    'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ',  # Верхний ряд
-                    'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э',  # Средний ряд
-                    'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', ',',  # Нижний ряд
-                    ' '  # Дополнительный
-                    )
-    symbol_counter = TextAnalyzer(filename, rows_symbols)
-    symbol_counter.count_symbols()
+    filename = r'C:\Users\Daniil\PycharmProjects\layoutload\voina-i-mir.txt'  # Имя файла с текстом
+    keylout_dd = {
+        'rfi5': [('й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ'),
+                 ('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p')],
+        'rfi4': [('ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э'),
+                 ('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l')],
+        'rfi3': [('я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю'), ('z', 'x', 'c', 'v', 'b', 'n', 'm')],
+        'rfi2': [(' '), (' ')],
+        'lfi5': [('ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'),
+                 ('`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-')],
+        'lfi4': [('й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ'),
+                 ('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p')],
+        'lfi3': [('ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э'),
+                 ('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l')],
+        'lfi2': [('я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю'), ('z', 'x', 'c', 'v', 'b', 'n', 'm')]
+    }
+    symbol_counter = TextAnalyzer(filename, keylout_dd)
+    symbol_counter.count_symbols(filename)
     symbol_counter.display_counts()
 
 
