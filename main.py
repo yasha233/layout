@@ -33,6 +33,8 @@ class TextAnalyzer:
                     i += 1
                     for char in line.strip():
                         finger = self.find_finger(char.lower())
+                        if char == "_":
+                            exec(f'self.finger_load["lfi5м"] += 1')
                         if char.isupper():
                             exec(f'self.finger_load["lfi5м"] += 1')
                             #print(char, self.finger_load)
@@ -57,7 +59,7 @@ class TextAnalyzer:
 
 
 def main():
-    filename = r'C:\voina-i-mir.txt'  # Имя файла с текстом
+    filename = r'C:\1.txt'  # Имя файла с текстом
     keylout_dd = {
         'rfi5м': [('-', '_', '+', '=', 'з', 'х', 'ъ', '{', '}', '[', ']', 'ж', 'э'),
               ('p', ':', ';', '"', '?', '/')],
