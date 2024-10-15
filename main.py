@@ -2,9 +2,10 @@ import string
 
 
 class TextAnalyzer:
-    def __init__(self, filename, symbols):
+    def __init__(self, filename, symbols, shifts):
         self.filename = filename
         self.symbols = symbols
+        self.shifts = shifts
         self.finger_load = {finger: 0 for finger in symbols.keys()}
 
     def find_finger(self, char):
@@ -14,17 +15,6 @@ class TextAnalyzer:
                     return finger
                     return None
 
-    '''def count_symbols(self, char):
-        with open(self.filename, 'r', encoding='utf-8') as file:
-            for line in file:
-                line = line.strip()  # Убираем пробелы по бокам
-                for char in line:
-                    if char in self.symbol_counts:
-                        self.symbol_counts[char] += 1
-                for char in line.strip().lower():
-                    finger = self.find_finger(char)
-                if finger:
-                    self.finger_load[finger] += 1'''
     def count_symbols(self):
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
@@ -33,8 +23,9 @@ class TextAnalyzer:
                     i += 1
                     for char in line.strip():
                         finger = self.find_finger(char.lower())
-                        if char == "_":
-                            exec(f'self.finger_load["lfi5м"] += 1')
+                        for sb in self.shifts:
+                            if char == sb:
+                                exec(f'self.finger_load["lfi5м"] += 1')
                         if char.isupper():
                             exec(f'self.finger_load["lfi5м"] += 1')
                             #print(char, self.finger_load)
@@ -59,21 +50,22 @@ class TextAnalyzer:
 
 
 def main():
-    filename = r'C:\1.txt'  # Имя файла с текстом
+    filename = r'C:\voina-i-mir.txt'  # Имя файла с текстом
+    symb = ('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ',')
     keylout_dd = {
-        'rfi5м': [('-', '_', '+', '=', 'з', 'х', 'ъ', '{', '}', '[', ']', 'ж', 'э'),
+        'rfi5м': [('-', '=', 'з', 'х', 'ъ', 'ж', 'э'),
               ('p', ':', ';', '"', '?', '/')],
-        'rfi4б': [(')', '0', 'щ', 'д', 'ю', '>', '.'),
+        'rfi4б': [(')', '0', 'щ', 'д', 'ю', '.'),
               ('l', 'O')],
-        'rfi3с': [('*', '8', '9', '(', 'ш', 'л', 'б', '<', ','), ('i', 'k')],
-        'rfi2у': [('&', '7', '?', 'н', 'г', 'р', 'о', 'т', 'ь'), ('y', 'u', 'h', 'j', 'n', 'm')],
-        'lfi5м': [('ё', '`', '~', 'й'), ('q', 'a')],
-        'lfi4б': [('1', '!', '2', '@', '"', 'ц', 'ы', 'я'), ('w', 's', 'z')],
-        'lfi3с': [('3', '#', '№', '4', ';', '$', 'у', 'в', 'ч'), ('e', 'd', 'x')],
-        'lfi2у': [('5', '%', '6', '^', ':', 'к', 'е', 'а', 'п', 'с', 'м', 'и'), ('r', 't', 'f', 'g', 'c', 'v', 'b')]
+        'rfi3с': [('8', '9', 'ш', 'л', 'б'), ('i', 'k')],
+        'rfi2у': [('7','н', 'г', 'р', 'о', 'т', 'ь'), ('y', 'u', 'h', 'j', 'n', 'm')],
+        'lfi5м': [('ё', 'й'), ('q', 'a')],
+        'lfi4б': [('1', '2', 'ц', 'ы', 'я'), ('w', 's', 'z')],
+        'lfi3с': [('3', '4', 'у', 'в', 'ч'), ('e', 'd', 'x')],
+        'lfi2у': [('5', '6', 'к', 'е', 'а', 'п', 'с', 'м', 'и'), ('r', 't', 'f', 'g', 'c', 'v', 'b')]
     }
 
-    symbol_counter = TextAnalyzer(filename, keylout_dd)
+    symbol_counter = TextAnalyzer(filename, keylout_dd, symb)
     symbol_counter.count_symbols()
     symbol_counter.display_counts()
 
