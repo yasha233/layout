@@ -14,13 +14,27 @@ class TextAnalyzer:
                     return finger
                     return None
 
-    def count_symbols(self, char):
-        with open(self.filename, 'r', encoding='utf-8') as file:
-            for line in file:
-                for char in line.strip().lower():
-                    finger = self.find_finger(char)
-                if finger:
-                    self.finger_load[finger] += 1
+    def count_symbols(self):
+        try:
+            with open(self.filename, 'r', encoding='utf-8') as file:
+                for line in file:
+                    for char in line.strip():
+                        if char == r'\ufeff':
+                            continue
+                        if char.isupper():
+                            exec(f'self.{self.symbols["shift"]} += 1')
+                            continue
+                        try:
+                            exec(f'self.{self.symbols[char.lower()]} += 1')
+                        except KeyError:
+                            pass
+
+        except FileNotFoundError:
+            print("Файл не найден.")
+        except IOError:
+            print("Ошибка ввода-вывода при работе с файлом.")
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
 
     def display_counts(self):
         for symbol, count in self.finger_load.items():
@@ -45,7 +59,7 @@ def main():
         'lfi2': [('я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю'), ('z', 'x', 'c', 'v', 'b', 'n', 'm')]
     }
     symbol_counter = TextAnalyzer(filename, keylout_dd)
-    symbol_counter.count_symbols(filename)
+    symbol_counter.count_symbols()
     symbol_counter.display_counts()
 
 
