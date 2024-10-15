@@ -33,8 +33,6 @@ class TextAnalyzer:
                     i += 1
                     for char in line.strip():
                         finger = self.find_finger(char.lower())
-                        if char == '\ufeff':
-                            continue
                         if char.isupper():
                             exec(f'self.finger_load["lfi5м"] += 1')
                             #print(char, self.finger_load)
