@@ -49,7 +49,9 @@ class TextAnalyzer:
                             pass
                 if i > 0:
                     self.finger_load["rfi5м"] += i
+                    self.finger_load2["rfi5м"] += i
             return self.finger_load, self.finger_load2
+
         except FileNotFoundError:
             print("Файл не найден.")
         except IOError:
@@ -102,10 +104,11 @@ def main():
                             ('4', '5', '.', 'а', 'ы', 'ю', 'о')]}
 
     symbol_counter = TextAnalyzer(filename, keylout_dd, symb)
-    symbol_counter.count_symbols()
+    loads = symbol_counter.count_symbols()
     symbol_counter.display_counts()
-    draw_histogram('йцукен', symbol_counter.count_symbols()[0])
-    draw_histogram('diktor', symbol_counter.count_symbols()[1])
+    draw_histogram('йцукен', loads[0])
+    print(loads[0], loads[1])
+    draw_histogram('diktor', loads[1])
 
 
 if __name__ == "__main__":
