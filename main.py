@@ -3,7 +3,7 @@ from visualization import draw_histogram
 
 
 def main():
-    filename = r'C:\1.txt'  # Имя файла с текстом
+    filename = (r'C:\voina-i-mir.txt', r'C:\1grams-3.txt')  # Имя файла с текстом
     symb = (('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ','),
             ('№', '%', ':', ';', '-', '"', '(', ')', '+', 'ъ', '?', '!', '_'))
 
@@ -23,13 +23,13 @@ def main():
                             ('3', 'я', 'е', 'х')],
                   'lfi2у': [('5', '6', 'к', 'е', 'а', 'п', 'с', 'м', 'и'),
                             ('4', '5', '.', 'а', 'ы', 'ю', 'о')]}
-
-    symbol_counter = TextAnalyzer(filename, keylout_dd, symb)
-    final_loads = symbol_counter.count_symbols()
-    symbol_counter.display_counts()
-    draw_histogram('йцукен', final_loads[0])
-    print(final_loads)
-    draw_histogram('diktor', final_loads[1])
+    for filename_i in filename:
+        symbol_counter = TextAnalyzer(filename_i, keylout_dd, symb)
+        final_loads = symbol_counter.count_symbols()
+        # symbol_counter.display_counts()
+        draw_histogram('йцукен', final_loads[0])
+        print(final_loads)
+        draw_histogram('diktor', final_loads[1])
 
 
 if __name__ == "__main__":

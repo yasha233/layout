@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def draw_histogram(name, data):
     """
     Рисует гистограмму на основе переданных данных.
