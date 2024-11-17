@@ -3,7 +3,7 @@ from visualization import draw_histogram
 
 
 def main():
-    filename = (r'C:\voina-i-mir.txt', r'C:\1grams-3.txt')  # Имя файла с текстом
+    filename = (r'C:\1.txt', r'C:\1.txt')  # Имя файла с текстом
     symb = (('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ','),
             ('№', '%', ':', ';', '-', '"', '(', ')', '+', 'ъ', '?', '!', '_'))
 
@@ -27,9 +27,8 @@ def main():
         symbol_counter = TextAnalyzer(filename_i, keylout_dd, symb)
         final_loads = symbol_counter.count_symbols()
         # symbol_counter.display_counts()
-        draw_histogram('йцукен', final_loads[0])
+        draw_histogram(filename_i, final_loads)
         print(final_loads)
-        draw_histogram('diktor', final_loads[1])
 
 
 if __name__ == "__main__":
