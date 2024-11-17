@@ -24,7 +24,7 @@ def draw_histogram(name, data):
     file_size = os.path.getsize(name)
     file_name = os.path.basename(name)
     # создание гистограммы
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(16, 8))
 
     # Рисуем бары для первого словаря
     rects1 = ax.barh([pos - width / 2 for pos in x], values1, width, label='йцукен', color='black')
@@ -37,10 +37,13 @@ def draw_histogram(name, data):
             xpos = values1[i]
         else:
             xpos = values2[i]
-        ax.text(xpos + 0.1, x[i] - width / 2 - 0.1, str(abs(values1[i] - values2[i])), ha='center', va='bottom')
+        ax.text(xpos + 0.1, x[i] - width / 2, str(abs(values1[i] - values2[i])), ha='center', va='bottom')
     ax.set_yticks(x)
     ax.set_yticklabels(keys)
+    ax.set_ylabel('Пальцы')
     ax.set_xlabel('Количество нажатий')
     ax.set_title(str(file_name) + '    ' + str(file_size) + ' MB')
     ax.legend()
+
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
     plt.show()
