@@ -4,7 +4,7 @@ from visualization import draw_histogram
 
 def main():
     filename = (r'F:\1.txt', )  # Имя файла с текстом
-    symb = (('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ','),
+    symbols_with_shift = (('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ','),
             ('№', '%', ':', ';', '-', '"', '(', ')', '+', 'ъ', '?', '!', '_'))
 
     keylout_dd = {'rfi5м': [('-', '=', 'з', 'х', 'ъ', 'ж', 'э'),
@@ -24,7 +24,7 @@ def main():
                   'lfi2у': [('5', '6', 'к', 'е', 'а', 'п', 'с', 'м', 'и'),
                             ('4', '5', '.', 'а', 'ы', 'ю', 'о')]}
     for filename_i in filename:
-        symbol_counter = TextAnalyzer(filename_i, keylout_dd, symb)
+        symbol_counter = TextAnalyzer(filename_i, keylout_dd, symbols_with_shift)
         final_loads = symbol_counter.count_symbols()
         # symbol_counter.display_counts()
         draw_histogram(filename_i, final_loads)
