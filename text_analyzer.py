@@ -41,12 +41,10 @@ class TextAnalyzer:
                         finger = t[0]
                         finger2 = t[1]
 
-                        # Заменяем exec для первого сдвига
                         for sb in self.shifts[0]:
                             if char == sb:
                                 if "lfi5м" in self.finger_load:
                                     self.finger_load["lfi5м"] += 1
-                        # Заменяем exec для второго сдвига
                         for sb in self.shifts[1]:
                             if char == sb:
                                 if "lfi5м" in self.finger_load2:
