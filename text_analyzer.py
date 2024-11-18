@@ -31,6 +31,10 @@ class TextAnalyzer:
         return i
 
     def count_symbols(self):
+        """
+        Производит подсчет количества нажатий для каждого пальца
+        :return: Два словаря, с количеством нажатий для каждогго пальца
+        """
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
                 i = -1
@@ -40,20 +44,33 @@ class TextAnalyzer:
                         t = self.find_finger(char.lower())
                         finger = t[0]
                         finger2 = t[1]
-
-                        for sb in self.shifts[0]:
-                            if char == sb:
+                        for symb_with_shift in self.shifts[0]:
+                            if char == symb_with_shift and finger != "lfi5m":
                                 if "lfi5м" in self.finger_load:
                                     self.finger_load["lfi5м"] += 1
-                        for sb in self.shifts[1]:
-                            if char == sb:
+                                else:
+                                    if "rfi5м" in self.finger_load:
+                                        self.finger_load["rfi5м"] += 1
+                        for symb_with_shift in self.shifts[1]:
+                            if char == symb_with_shift and finger2 != "lfi5m":
                                 if "lfi5м" in self.finger_load2:
                                     self.finger_load2["lfi5м"] += 1
+                            if char == symb_with_shift and finger2 == "lfi5m":
+                                if "rfi5м" in self.finger_load2:
+                                    self.finger_load2["rfi5м"] += 1
                         if char.isupper():
-                            if "lfi5м" in self.finger_load:
-                                self.finger_load["lfi5м"] += 1
-                            if "lfi5м" in self.finger_load2:
-                                self.finger_load2["lfi5м"] += 1
+                            if finger != "lfi5м":
+                                if "lfi5м" in self.finger_load:
+                                    self.finger_load["lfi5м"] += 1
+                            else:
+                                if "rfi5м" in self.finger_load:
+                                    self.finger_load["rfi5м"] += 1
+                            if finger2 != "lfi5м":
+                                if "lfi5м" in self.finger_load2:
+                                    self.finger_load2["lfi5м"] += 1
+                            else:
+                                if "rfi5м" in self.finger_load2:
+                                    self.finger_load2["rfi5м"] += 1
 
                         # Обновляем пальцы, если они существуют в словарях
                         if finger in self.finger_load:
