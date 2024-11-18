@@ -10,11 +10,13 @@ from visualization import *
 
 
 def main():
-    filename = (r'C:\voina-i-mir.txt', )  # Имя файла с текстом
+    filename = (r'F:\1.txt', r'C:\voina-i-mir.txt')  # Имя файла с текстом
     symbols_with_shift = (('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/', ','),
                           ('№', '%', ':', ';', '-', '"', '(', ')', '+', 'ъ', '?', '!', '_'),
                           ('!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', '/'))
-
+    homerows = (('ф', 'ы', 'в', 'а', 'о', 'л', 'д', 'ж', ' '),
+                ('у', 'и', 'е', 'о', 'н', 'т', 'с', 'р', ' '),
+                ('г', 'и', 'е', 'о', 'т', 'с', 'н', 'з', ' '))
     keylout_dd = {'rfi5м': [('+', '_', ')', '-', '=', 'з', 'х', 'ъ', 'ж', 'э'),
                             ('+', '_', ')', '0', '*', '=', 'ч', 'ш', 'щ', 'р', 'й', 'ж'),
                             ('0', ')', '-', '_', '=', '+', 'х', 'ц', 'щ', '/', 'з', 'ж', 'ч')],
@@ -43,11 +45,10 @@ def main():
                             ('4', '5', '.', ',', '!', '?', 'а', 'ы', 'ю', 'о'),
                             ('5', '4', '%', ';', ',', '.', 'я', 'о', 'у', 'э')]}
     for filename_i in filename:
-        symbol_counter = TextAnalyzer(filename_i, keylout_dd, symbols_with_shift)
+        symbol_counter = TextAnalyzer(filename_i, keylout_dd, symbols_with_shift, homerows)
         final_loads = symbol_counter.count_symbols()
         # symbol_counter.display_counts()
         draw_histogram(filename_i, final_loads)
-        print(final_loads)
 
 
 if __name__ == "__main__":

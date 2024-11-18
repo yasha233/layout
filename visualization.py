@@ -33,7 +33,7 @@ def draw_histogram(path, data):
     ax.barh([pos for pos in x], values2, width, label='diktor', color='blue')
     ax.barh([pos - width for pos in x], values3, width, label='zubachew', color='grey')
     for i in range(len(keys)):
-        if values1[i] + values2[i] > 0:  # Избегаем деления на ноль
+        if values1[i] !=0 and values1[i] + values2[i] > 0:  # Избегаем деления на ноль
             diff1 = abs(1 - abs(values2[i] - values1[i]) / values1[i]) * 100
             if values1[i] > values2[i]:
                 xpos = values1[i]
@@ -41,7 +41,7 @@ def draw_histogram(path, data):
                 xpos = values2[i]
             ax.text(xpos + 0.1, i, f'{diff1:.1f}%', ha='center', va='center', color='black')
 
-        if values2[i] + values3[i] > 0:  # Избегаем деления на ноль
+        if values2[i] != 0 and values2[i] + values3[i] > 0:  # Избегаем деления на ноль
             diff2 = abs(values3[i] - values2[i]) / values2[i] * 100
             if values2[i] > values3[i]:
                 xpos = values2[i]

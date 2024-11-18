@@ -1,5 +1,5 @@
 class TextAnalyzer:
-    def __init__(self, filename, symbols, shifts):
+    def __init__(self, filename, symbols, shifts, homekeys):
         """
         Инициализация класса TextAnalyzer.
 
@@ -10,6 +10,7 @@ class TextAnalyzer:
         self.filename = filename
         self.symbols = symbols
         self.shifts = shifts
+        self.homekeys = homekeys
         self.finger_load = {finger: 0 for finger in symbols.keys()}
         self.finger_load2 = {finger2: 0 for finger2 in symbols.keys()}
         self.finger_load3 = {finger3: 0 for finger3 in symbols.keys()}
@@ -41,6 +42,9 @@ class TextAnalyzer:
         """
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
+                fine1 = 0
+                fine2 = 0
+                fine3 = 0
                 i = -1
                 for line in file:
                     i += 1
@@ -96,14 +100,19 @@ class TextAnalyzer:
                             else:
                                 if "rfi5м" in self.finger_load3:
                                     self.finger_load3["rfi5м"] += 1
-
                         # Обновляем пальцы, если они существуют в словарях
                         if finger in self.finger_load:
                             self.finger_load[finger] += 1
+                            if not (char in self.homekeys[0]):
+                                fine1 += 1
                         if finger2 in self.finger_load2:
                             self.finger_load2[finger2] += 1
-                            if finger3 in self.finger_load3:
-                                self.finger_load3[finger3] += 1
+                            if not (char in self.homekeys[1]):
+                                fine2 += 1
+                        if finger3 in self.finger_load3:
+                            self.finger_load3[finger3] += 1
+                            if not (char in self.homekeys[2]):
+                                fine3 += 1
 
                 if i > 0:
                     if "rfi5м" in self.finger_load:
@@ -112,7 +121,7 @@ class TextAnalyzer:
                         self.finger_load2["rfi5м"] += i
                     if "rfi5м" in self.finger_load3:
                         self.finger_load3["rfi5м"] += i
-
+                print(f'Штрафы в йцукен: {fine1}\nШтрафы в diktor: {fine2}\nШтрафы в zubachew: {fine3}')
             return self.finger_load, self.finger_load2, self.finger_load3
 
         except FileNotFoundError:
