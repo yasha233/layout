@@ -34,7 +34,7 @@ def draw_histogram(path, data):
     ax.barh([pos - width for pos in x], values3, width, label='zubachew', color='grey')
     for i in range(len(keys)):
         if values1[i] + values2[i] > 0:  # Избегаем деления на ноль
-            diff1 = abs(values2[i] - values1[i]) / values1[i] * 100
+            diff1 = abs(1 - abs(values2[i] - values1[i]) / values1[i]) * 100
             if values1[i] > values2[i]:
                 xpos = values1[i]
             else:

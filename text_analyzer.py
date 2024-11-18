@@ -51,7 +51,7 @@ class TextAnalyzer:
                         finger3 = t[2]
 
                         for symb_with_shift in self.shifts[0]:
-                            if char == symb_with_shift and finger != "lfi5m":
+                            if char == symb_with_shift and finger != "lfi5м":
                                 if "lfi5м" in self.finger_load:
                                     self.finger_load["lfi5м"] += 1
                                 else:
@@ -59,18 +59,18 @@ class TextAnalyzer:
                                         self.finger_load["rfi5м"] += 1
 
                         for symb_with_shift in self.shifts[1]:
-                            if char == symb_with_shift and finger2 != "lfi5m":
+                            if char == symb_with_shift and finger2 != "lfi5м":
                                 if "lfi5м" in self.finger_load2:
                                     self.finger_load2["lfi5м"] += 1
-                            if char == symb_with_shift and finger2 == "lfi5m":
+                            if char == symb_with_shift and finger2 == "lfi5м":
                                 if "rfi5м" in self.finger_load2:
                                     self.finger_load2["rfi5м"] += 1
 
                         for symb_with_shift in self.shifts[2]:
-                            if char == symb_with_shift and finger3 != "lfi5m":
+                            if char == symb_with_shift and finger3 != "lfi5м":
                                 if "lfi5м" in self.finger_load3:
                                     self.finger_load3["lfi5м"] += 1
-                            if char == symb_with_shift and finger3 == "lfi5m":
+                            if char == symb_with_shift and finger3 == "lfi5м":
                                 if "rfi5м" in self.finger_load3:
                                     self.finger_load3["rfi5м"] += 1
 

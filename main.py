@@ -48,7 +48,7 @@ def main():
         # symbol_counter.display_counts()
         draw_histogram(filename_i, final_loads)
         print(final_loads)
-        result(final_loads)
+
 
 if __name__ == "__main__":
     main()
