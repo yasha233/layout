@@ -4,9 +4,15 @@ class TextAnalyzer:
         Инициализация класса TextAnalyzer.
 
         :param filename: Путь к файлу, который будет анализироваться.
-        :param symbols: Словарь, содержащий символы и соответствующие им раскладки.
+        :param symbols: Словарь, содержащий символы
+        и соответствующие им раскладки.
         :param shifts: Список сдвигов для анализа символов.
         """
+        self.distant_symbol = [('х', 'ъ', 'ё'),
+                               ('ш', 'щ', 'ё'),
+                               ('ц', 'щ', 'ё'),
+                               ('ш', 'щ', '')]
+        self.digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
         self.filename = filename
         self.symbols = symbols
         self.shifts = shifts
@@ -18,7 +24,8 @@ class TextAnalyzer:
 
     def find_finger(self, char):
         """
-        Находит, каким пальцем следует печатать данный символ в каждой из раскладок.
+        Находит, каким пальцем следует печатать данный
+        символ в каждой из раскладок.
 
         :param char: Символ, для которого нужно определить палец.
         :return: Список, содержащий два элемента: палец в каждой раскладке.
@@ -49,7 +56,7 @@ class TextAnalyzer:
         fine4 = 0
         for filepath in self.filename:
             try:
-                with open(filepath, 'r', encoding='utf-8') as file:
+                with (open(filepath, 'r', encoding='utf-8') as file):
                     i = -1
                     for line in file:
                         i += 1
@@ -61,7 +68,8 @@ class TextAnalyzer:
                             finger4 = t[3]
 
                             for symb_with_shift in self.shifts[0]:
-                                if char == symb_with_shift and finger != "lfi5м":
+                                if char == symb_with_shift and finger\
+                                        != "lfi5м":
                                     if "lfi5м" in self.finger_load:
                                         self.finger_load["lfi5м"] += 1
                                     else:
@@ -69,77 +77,102 @@ class TextAnalyzer:
                                             self.finger_load["rfi5м"] += 1
 
                             for symb_with_shift in self.shifts[1]:
-                                if char == symb_with_shift and finger2 != "lfi5м":
+                                if char == symb_with_shift and\
+                                        finger2 != "lfi5м":
                                     if "lfi5м" in self.finger_load2:
                                         self.finger_load2["lfi5м"] += 1
-                                if char == symb_with_shift and finger2 == "lfi5м":
+                                if char == symb_with_shift and\
+                                        finger2 == "lfi5м":
                                     if "rfi5м" in self.finger_load2:
                                         self.finger_load2["rfi5м"] += 1
 
                             for symb_with_shift in self.shifts[2]:
-                                if char == symb_with_shift and finger3 != "lfi5м":
+                                if char == symb_with_shift and\
+                                        finger3 != "lfi5м":
                                     if "lfi5м" in self.finger_load3:
                                         self.finger_load3["lfi5м"] += 1
-                                if char == symb_with_shift and finger3 == "lfi5м":
+                                if char == symb_with_shift and\
+                                        finger3 == "lfi5м":
                                     if "rfi5м" in self.finger_load3:
                                         self.finger_load3["rfi5м"] += 1
 
                             # for symb_with_shift in self.shifts[3]:
-                            #     if char == symb_with_shift and finger4 != "lfi5м":
+                            #     if char == symb_with_shift and\
+                            #     finger4 != "lfi5м":
                             #         if "lfi5м" in self.finger_load4:
                             #             self.finger_load4["lfi5м"] += 1
-                            #     if char == symb_with_shift and finger4 == "lfi5м":
+                            #     if char == symb_with_shift and\
+                            #     finger4 == "lfi5м":
                             #         if "rfi5м" in self.finger_load4:
                             #             self.finger_load4["rfi5м"] += 1
 
                             if char.isupper():
-
                                 if finger != "lfi5м":
                                     if "lfi5м" in self.finger_load:
                                         self.finger_load["lfi5м"] += 1
+                                        fine1 += 1
                                 else:
                                     if "rfi5м" in self.finger_load:
                                         self.finger_load["rfi5м"] += 1
-
+                                        fine1 += 1
                                 if finger2 != "lfi5м":
                                     if "lfi5м" in self.finger_load2:
                                         self.finger_load2["lfi5м"] += 1
+                                        fine2 += 1
                                 else:
                                     if "rfi5м" in self.finger_load2:
                                         self.finger_load2["rfi5м"] += 1
-
+                                        fine2 += 1
                                 if finger3 != "lfi5м":
                                     if "lfi5м" in self.finger_load3:
                                         self.finger_load3["lfi5м"] += 1
+                                        fine3 += 1
                                 else:
                                     if "rfi5м" in self.finger_load3:
                                         self.finger_load3["rfi5м"] += 1
-
+                                        fine3 += 1
                                 if finger4 != "lfi5м":
                                     if "lfi5м" in self.finger_load4:
                                         self.finger_load4["lfi5м"] += 1
+                                        fine4 += 1
                                 else:
                                     if "rfi5м" in self.finger_load4:
                                         self.finger_load4["rfi5м"] += 1
+                                        fine4 += 1
 
                             # Обновляем пальцы, если они существуют в словарях
                             if finger in self.finger_load:
                                 self.finger_load[finger] += 1
                                 if not (char in self.homekeys[0]):
                                     fine1 += 1
+                                    if char in self.digits:
+                                        fine1 += 1
+                                    if char in self.distant_symbol:
+                                        fine1 += 1
                             if finger2 in self.finger_load2:
                                 self.finger_load2[finger2] += 1
                                 if not (char in self.homekeys[1]):
                                     fine2 += 1
+                                    if char in self.digits:
+                                        fine2 += 1
+                                    if char in self.distant_symbol:
+                                        fine2 += 1
                             if finger3 in self.finger_load3:
                                 self.finger_load3[finger3] += 1
                                 if not (char in self.homekeys[2]):
                                     fine3 += 1
+                                    if char in self.digits:
+                                        fine3 += 1
+                                    if char in self.distant_symbol:
+                                        fine3 += 1
                             if finger4 in self.finger_load4:
                                 self.finger_load4[finger4] += 1
                                 if not (char in self.homekeys[3]):
                                     fine4 += 1
-
+                                    if char in self.digits:
+                                        fine4 += 1
+                                    if char in self.distant_symbol:
+                                        fine4 += 1
                     if i > 0:
                         if "rfi5м" in self.finger_load:
                             self.finger_load["rfi5м"] += i
@@ -149,8 +182,14 @@ class TextAnalyzer:
                             self.finger_load3["rfi5м"] += i
                         if "rfi5м" in self.finger_load4:
                             self.finger_load4["rfi5м"] += i
-                    print(f'Штрафы в йцукен: {fine1}\nШтрафы в diktor: {fine2}\nШтрафы в zubachew: {fine3}\nШтрафы в vyzov: {fine4}\n')
-                return self.finger_load, self.finger_load2, self.finger_load3, self.finger_load4
+                    print(f'Штрафы в йцукен: {fine1}\n'
+                          f'Штрафы в diktor: {fine2}\n'
+                          f'Штрафы в zubachew: {fine3}\n'
+                          f'Штрафы в vyzov: {fine4}\n')
+                    fines = [fine1, fine2, fine3, fine4]
+                final = [self.finger_load, self.finger_load2,
+                         self.finger_load3, self.finger_load4, fines]
+                return final
 
             except FileNotFoundError:
                 print("Файл не найден.")
