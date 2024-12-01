@@ -8,6 +8,7 @@ class TextAnalyzer:
         и соответствующие им раскладки.
         :param shifts: Список сдвигов для анализа символов.
         """
+        self.previous_load = None
         self.distant_symbol = [('х', 'ъ', 'ё'),
                                ('ш', 'щ', 'ё'),
                                ('ц', 'щ', 'ё'),
@@ -45,6 +46,43 @@ class TextAnalyzer:
                         i[0] = finger
         return i
 
+    def is_convenient_press(self, current_load):
+        """
+        Определяет, является ли нажатие удобным для каждой раскладки.
+        :return: Список из True и False для каждой раскладки.
+        """
+        if self.previous_load is None:
+            return [False, False, False, False]
+
+        results = []  # Список для хранения результатов для каждой раскладки
+
+        for i in range(4):  # Проверяем для каждой раскладки
+            current_finger = current_load[i]
+            previous_finger = self.previous_load[i]
+
+            if current_finger is None or previous_finger is None:
+                results.append(False)  # Если палец не найден, добавляем False
+                continue
+
+            # Проверяем, использовалась ли одна рука
+            same_hand = (current_finger.startswith('lfi') and previous_finger.startswith('lfi')) or \
+                        (current_finger.startswith('rfi') and previous_finger.startswith('rfi'))
+
+            # Получаем цифры из ключей
+            current_key_num = int(current_finger[3]) if len(current_finger) > 3 and current_finger[3].isdigit() \
+                else None
+            previous_key_num = int(previous_finger[3]) if len(previous_finger) > 3 and previous_finger[3].isdigit() \
+                else None
+
+            # Проверяем, уменьшается ли цифра
+            decreasing_number = (current_key_num is not None and previous_key_num is not None and
+                                 current_key_num < previous_key_num)
+
+            # Если нажатие удобное, добавляем True, иначе False
+            results.append(same_hand and decreasing_number)
+
+        return results  # Возвращаем список результатов
+
     def count_symbols(self):
         """
         Производит подсчет количества нажатий для каждого пальца
@@ -54,6 +92,7 @@ class TextAnalyzer:
         fine2 = 0
         fine3 = 0
         fine4 = 0
+        combo = [0] * 4
         for filepath in self.filename:
             try:
                 with (open(filepath, 'r', encoding='utf-8') as file):
@@ -66,9 +105,11 @@ class TextAnalyzer:
                             finger2 = t[1]
                             finger3 = t[2]
                             finger4 = t[3]
-
+                            for j in range(4):
+                                if self.is_convenient_press(t)[j]:
+                                    combo[j] += 1  # Увеличиваем значение на 1
                             for symb_with_shift in self.shifts[0]:
-                                if char == symb_with_shift and finger\
+                                if char == symb_with_shift and finger \
                                         != "lfi5м":
                                     if "lfi5м" in self.finger_load:
                                         self.finger_load["lfi5м"] += 1
@@ -77,21 +118,21 @@ class TextAnalyzer:
                                             self.finger_load["rfi5м"] += 1
 
                             for symb_with_shift in self.shifts[1]:
-                                if char == symb_with_shift and\
+                                if char == symb_with_shift and \
                                         finger2 != "lfi5м":
                                     if "lfi5м" in self.finger_load2:
                                         self.finger_load2["lfi5м"] += 1
-                                if char == symb_with_shift and\
+                                if char == symb_with_shift and \
                                         finger2 == "lfi5м":
                                     if "rfi5м" in self.finger_load2:
                                         self.finger_load2["rfi5м"] += 1
 
                             for symb_with_shift in self.shifts[2]:
-                                if char == symb_with_shift and\
+                                if char == symb_with_shift and \
                                         finger3 != "lfi5м":
                                     if "lfi5м" in self.finger_load3:
                                         self.finger_load3["lfi5м"] += 1
-                                if char == symb_with_shift and\
+                                if char == symb_with_shift and \
                                         finger3 == "lfi5м":
                                     if "rfi5м" in self.finger_load3:
                                         self.finger_load3["rfi5м"] += 1
@@ -173,6 +214,7 @@ class TextAnalyzer:
                                         fine4 += 1
                                     if char in self.distant_symbol:
                                         fine4 += 1
+                            self.previous_load = t
                     if i > 0:
                         if "rfi5м" in self.finger_load:
                             self.finger_load["rfi5м"] += i
@@ -188,7 +230,7 @@ class TextAnalyzer:
                           f'Штрафы в vyzov: {fine4}\n')
                     fines = [fine1, fine2, fine3, fine4]
                 final = [self.finger_load, self.finger_load2,
-                         self.finger_load3, self.finger_load4, fines]
+                         self.finger_load3, self.finger_load4, fines, combo]
                 return final
 
             except FileNotFoundError:

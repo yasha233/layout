@@ -64,9 +64,11 @@ def main():
     final_loads = symbol_counter.count_symbols()
     # symbol_counter.display_counts()
     time_finish = monotonic()
-    loads_for_fines = final_loads[-1]
+    loads_for_combo = final_loads[-1]
+    loads_for_fines = final_loads[-2]
     draw_histogram(filename, final_loads)
     draw_histogram_fines(loads_for_fines)
+    draw_histogram_combo(loads_for_combo)
     return time_finish
 
 

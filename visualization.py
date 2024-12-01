@@ -15,6 +15,7 @@ def draw_histogram(paths, data):
     None
     """
     data.pop()
+    data.pop()
     color = ('red', 'blue', 'grey', 'yellow')
     labels = ('йцукен', 'diktor', 'zubachew', 'skoropis')
     num_dicts = len(data)  # Количество словарей
@@ -26,7 +27,6 @@ def draw_histogram(paths, data):
     # Получаем информацию о файлах
     file_sizes = [round(os.path.getsize(path) / (1024 * 1024), 2) for path in paths]
     file_names = [os.path.basename(path) for path in paths]
-    print(file_names)
     # создание гистограммы
     fig, ax = plt.subplots(figsize=(16, 8))
 
@@ -72,6 +72,30 @@ def draw_histogram_fines(data):
     ax.set_ylabel('Раскладки')
     ax.set_xlabel('Количество штрафов')
     ax.set_title('График штрафов')
+    ax.legend()
+
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+    plt.show()
+
+
+def draw_histogram_combo(data):
+    color = ('red', 'blue', 'grey', 'yellow')
+    labels = ('йцукен', 'diktor', 'zubachew', 'skoropis')
+    keys = labels
+    values = data
+    width = 0.2  # Ширина баров
+    x = range(len(keys))  # Позиции по оси X
+    fig, ax = plt.subplots(figsize=(16, 8))
+
+    # Рисуем бары для каждого словаря
+    for i in range(len(data)):
+        ax.barh(len(data) - i - 1, values[i], width, label=labels[i], color=color[i])
+
+    ax.set_yticks(x)
+    ax.set_yticklabels(reversed(keys))
+    ax.set_ylabel('Раскладки')
+    ax.set_xlabel('Количество комбинаций')
+    ax.set_title('График удобных комбинаций')
     ax.legend()
 
     plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
