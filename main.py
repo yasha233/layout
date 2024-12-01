@@ -7,6 +7,7 @@
 
 from text_analyzer import TextAnalyzer
 from visualization import *
+from time import monotonic
 
 
 def main():
@@ -62,12 +63,14 @@ def main():
                                   symbols_with_shift, homerows)
     final_loads = symbol_counter.count_symbols()
     # symbol_counter.display_counts()
-    print(final_loads)
-    print(final_loads[-1])
+    time_finish = monotonic()
     loads_for_fines = final_loads[-1]
     draw_histogram(filename, final_loads)
     draw_histogram_fines(loads_for_fines)
+    return time_finish
 
 
 if __name__ == "__main__":
-    main()
+    t1 = monotonic()
+    t2 = main()
+    print(t2 - t1)
