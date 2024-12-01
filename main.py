@@ -4,7 +4,7 @@
 Задача: сравнить нагрузку на пальцы на двух раскладках:
 йцукен и diktor с использованием 2-х файлов: voina-i-mir и 1grams-3.
 """
-
+from time import monotonic
 from text_analyzer import TextAnalyzer
 from visualization import *
 
@@ -60,14 +60,16 @@ def main():
 
     symbol_counter = TextAnalyzer(filename, keylout_dd,
                                   symbols_with_shift, homerows)
-    final_loads = symbol_counter.count_symbols()
+    final_loads, fines = symbol_counter.count_symbols()
     # symbol_counter.display_counts()
-    print(final_loads)
-    print(final_loads[-1])
-    loads_for_fines = final_loads[-1]
+    print("Тип final_loads:", type(final_loads))
+    print("Содержимое final_loads:", final_loads)
     draw_histogram(filename, final_loads)
-    draw_histogram_fines(loads_for_fines)
+    draw_histogram_fines(fines)
 
 
 if __name__ == "__main__":
+    t1 = monotonic()
     main()
+    t2 = monotonic()
+    print(t2 - t1)
